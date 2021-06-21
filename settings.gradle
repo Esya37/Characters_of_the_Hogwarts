@@ -1,0 +1,2 @@
+rootProject.name = "Characters of the Hogwarts"
+include ':app'

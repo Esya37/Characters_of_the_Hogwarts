@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Characters of the Hogwarts</string>
+    <string name="chooseAFaculty">Выберите факультет</string>
+    <string name="griffindor">Гриффиндор</string>
+    <string name="hufflepuff">Пуффендуй</string>
+    <string name="ravenclaw">Когтевран</string>
+    <string name="slytherin">Слизерин</string>
+</resources>

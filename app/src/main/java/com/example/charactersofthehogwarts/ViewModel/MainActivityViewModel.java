@@ -1,6 +1,7 @@
 package com.example.charactersofthehogwarts.ViewModel;
 
 import android.app.Application;
+import android.graphics.Bitmap;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -21,10 +22,12 @@ public class MainActivityViewModel extends AndroidViewModel {
         charactersRepository = new CharactersRepository(application);
     }
 
-    public LiveData<List<Character>> getGriffindorCharacters() {
-        characters = charactersRepository.getGriffindorCharacters();
+    public LiveData<List<Character>> getCharacters(String faculty)
+    {
+        characters = charactersRepository.getCharacters(faculty);
         return characters;
     }
+
 
 
 }

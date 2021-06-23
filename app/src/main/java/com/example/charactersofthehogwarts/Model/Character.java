@@ -58,27 +58,29 @@ public class Character {
         this.house = house;
     }
 
-    public Date getDateOfBirth() {
+    public String getDateOfBirth() {
 
-        try {
-            tempDate = format.parse(this.dateOfBirth);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            tempDate = new Date(0);
-        }
-        return tempDate;
+        return dateOfBirth;
+//        try {
+//            tempDate = format.parse(this.dateOfBirth);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//            tempDate = new Date(0);
+//        }
+//        return tempDate;
     }
 
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = format.format(dateOfBirth);
     }
 
-    public int getYearOfBirth() {
-        if (this.yearOfBirth == "") {
-            return 0;
-        } else {
-            return Integer.parseInt(this.yearOfBirth);
-        }
+    public String getYearOfBirth() {
+        return yearOfBirth;
+//        if (this.yearOfBirth == "") {
+//            return 0;
+//        } else {
+//            return Integer.parseInt(this.yearOfBirth);
+//        }
     }
 
     public void setYearOfBirth(int yearOfBirth) {

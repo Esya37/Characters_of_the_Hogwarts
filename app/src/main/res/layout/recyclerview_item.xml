@@ -26,38 +26,142 @@
             android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/aliveTextView2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:text="@string/status"
+                android:textColor="#000000"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/imageView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/barrier9" />
+
+            <TextView
+                android:id="@+id/hogwartsStudentOrStaffTextView2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:text="@string/post"
+                android:textColor="#000000"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@+id/barrier8"
+                app:layout_constraintEnd_toEndOf="@+id/imageView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/barrier7" />
+
+            <TextView
+                android:id="@+id/patronusTextView2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:text="@string/patronus"
+                android:textColor="#000000"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@+id/barrier7"
+                app:layout_constraintEnd_toEndOf="@+id/imageView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/barrier6" />
+
+            <TextView
+                android:id="@+id/hairColourTextView2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:text="@string/hairColour"
+                android:textColor="#000000"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@+id/barrier6"
+                app:layout_constraintEnd_toEndOf="@+id/imageView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/barrier5" />
+
+            <TextView
+                android:id="@+id/eyeColourTextView2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:text="@string/eyeColour"
+                android:textColor="#000000"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@+id/barrier5"
+                app:layout_constraintEnd_toEndOf="@+id/imageView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/barrier4" />
+
+            <TextView
+                android:id="@+id/ancestryTextView2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:text="@string/ancestry"
+                android:textColor="#000000"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@+id/barrier4"
+                app:layout_constraintEnd_toEndOf="@+id/imageView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/barrier3" />
+
+            <TextView
+                android:id="@+id/yearOfBirthTextView2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:text="@string/yearOfBirth"
+                android:textColor="#000000"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@id/barrier3"
+                app:layout_constraintEnd_toEndOf="@+id/imageView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/barrier2" />
+
+            <TextView
+                android:id="@+id/speciesTextView2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:text="@string/species"
+                android:textColor="#000000"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@id/barrier2"
+                app:layout_constraintEnd_toEndOf="@+id/imageView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/barrier" />
+
+            <TextView
                 android:id="@+id/aliveTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="50dp"
                 android:layout_marginRight="50dp"
+                android:layout_marginBottom="5dp"
                 android:text="alive"
                 android:textColor="#000000"
                 android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
-                app:layout_constraintTop_toBottomOf="@+id/actorTextView" />
-
-            <TextView
-                android:id="@+id/actorTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="50dp"
-                android:layout_marginRight="50dp"
-                android:text="Emma Watson"
-                android:textColor="#000000"
-                android:textSize="24sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/imageView"
-                app:layout_constraintTop_toBottomOf="@+id/hogwartsStudentOrStaffTextView" />
+                app:layout_constraintTop_toBottomOf="@id/barrier9" />
 
             <TextView
                 android:id="@+id/hogwartsStudentOrStaffTextView"
@@ -65,16 +169,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="50dp"
                 android:layout_marginRight="50dp"
+                android:layout_marginBottom="5dp"
                 android:text="student"
                 android:textColor="#000000"
                 android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@id/barrier8"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
-                app:layout_constraintTop_toBottomOf="@+id/patronusTextView" />
+                app:layout_constraintTop_toBottomOf="@id/barrier7" />
 
             <TextView
                 android:id="@+id/patronusTextView"
@@ -82,16 +187,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="50dp"
                 android:layout_marginRight="50dp"
+                android:layout_marginBottom="5dp"
                 android:text="otter"
                 android:textColor="#000000"
                 android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@id/barrier7"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
-                app:layout_constraintTop_toBottomOf="@+id/hairColourTextView" />
+                app:layout_constraintTop_toBottomOf="@id/barrier6" />
 
             <TextView
                 android:id="@+id/hairColourTextView"
@@ -99,16 +205,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="50dp"
                 android:layout_marginRight="50dp"
+                android:layout_marginBottom="5dp"
                 android:text="brown"
                 android:textColor="#000000"
                 android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@id/barrier6"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
-                app:layout_constraintTop_toBottomOf="@+id/eyeColourTextView" />
+                app:layout_constraintTop_toBottomOf="@id/barrier5" />
 
             <TextView
                 android:id="@+id/eyeColourTextView"
@@ -116,16 +223,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="50dp"
                 android:layout_marginRight="50dp"
-                android:text="Eye Colour brown"
+                android:layout_marginBottom="5dp"
+                android:text="brown"
                 android:textColor="#000000"
                 android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@id/barrier5"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
-                app:layout_constraintTop_toBottomOf="@+id/ancestryTextView" />
+                app:layout_constraintTop_toBottomOf="@id/barrier4" />
 
             <TextView
                 android:id="@+id/ancestryTextView"
@@ -133,16 +241,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="50dp"
                 android:layout_marginRight="50dp"
+                android:layout_marginBottom="5dp"
                 android:text="muggleborn"
                 android:textColor="#000000"
                 android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@id/barrier4"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
-                app:layout_constraintTop_toBottomOf="@+id/yearOfBirthTextView" />
+                app:layout_constraintTop_toBottomOf="@id/barrier3" />
 
             <TextView
                 android:id="@+id/yearOfBirthTextView"
@@ -150,16 +259,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="50dp"
                 android:layout_marginRight="50dp"
+                android:layout_marginBottom="5dp"
                 android:text="1979"
                 android:textColor="#000000"
                 android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@id/barrier3"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
-                app:layout_constraintTop_toBottomOf="@+id/speciesTextView" />
+                app:layout_constraintTop_toBottomOf="@id/barrier2" />
 
             <TextView
                 android:id="@+id/speciesTextView"
@@ -167,16 +277,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="50dp"
                 android:layout_marginRight="50dp"
+                android:layout_marginBottom="5dp"
                 android:text="human"
                 android:textColor="#000000"
                 android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@id/barrier2"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
-                app:layout_constraintTop_toBottomOf="@+id/dateOfBirthTextView" />
+                app:layout_constraintTop_toBottomOf="@id/barrier" />
 
             <TextView
                 android:id="@+id/genderTextView"
@@ -190,8 +301,9 @@
                 android:text="female"
                 android:textColor="#000000"
                 android:textSize="24sp"
+                app:layout_constraintBottom_toTopOf="@+id/dateOfBirthTextView"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
                 app:layout_constraintTop_toBottomOf="@+id/nameTextView" />
 
@@ -200,6 +312,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginTop="-5dp"
+                android:layout_marginBottom="-5dp"
+                app:layout_constraintBottom_toBottomOf="@id/barrier"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintWidth_percent="0.327"
@@ -216,7 +330,9 @@
                 android:text="Hermione Granger"
                 android:textColor="#000000"
                 android:textSize="24sp"
+                app:layout_constraintBottom_toTopOf="@+id/genderTextView"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -232,7 +348,9 @@
                 android:text="19-09-1979"
                 android:textColor="#000000"
                 android:textSize="24sp"
+                app:layout_constraintBottom_toTopOf="@+id/speciesTextView"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
                 app:layout_constraintTop_toBottomOf="@+id/genderTextView" />
 
@@ -257,6 +375,113 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.495"
                 app:rippleColor="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/actorTextView2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:text="@string/actor"
+                android:textColor="#000000"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@+id/barrier9"
+                app:layout_constraintEnd_toEndOf="@+id/imageView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/barrier8" />
+
+            <TextView
+                android:id="@+id/actorTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="50dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginBottom="5dp"
+                android:text="Emma Watson"
+                android:textColor="#000000"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@id/barrier9"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintTop_toBottomOf="@id/barrier8" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="nameTextView,dateOfBirthTextView,genderTextView,imageView"
+                tools:layout_editor_absoluteY="497dp"
+                tools:visibility="visible" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="speciesTextView,speciesTextView2"
+                tools:layout_editor_absoluteY="517dp" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="yearOfBirthTextView2,yearOfBirthTextView"
+                tools:layout_editor_absoluteY="517dp" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="ancestryTextView2,ancestryTextView"
+                tools:layout_editor_absoluteY="517dp" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="eyeColourTextView,eyeColourTextView2"
+                tools:layout_editor_absoluteY="517dp" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="hairColourTextView,hairColourTextView2"
+                tools:layout_editor_absoluteY="517dp" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="patronusTextView,patronusTextView2"
+                tools:layout_editor_absoluteY="517dp" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="hogwartsStudentOrStaffTextView,hogwartsStudentOrStaffTextView2"
+                tools:layout_editor_absoluteY="517dp" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="actorTextView2,actorTextView"
+                tools:layout_editor_absoluteY="517dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

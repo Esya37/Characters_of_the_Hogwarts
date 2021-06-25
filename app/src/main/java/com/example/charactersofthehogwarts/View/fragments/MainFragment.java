@@ -1,13 +1,22 @@
 package com.example.charactersofthehogwarts.View.fragments;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.transition.Fade;
+import androidx.transition.Scene;
+import androidx.transition.Slide;
+import androidx.transition.Transition;
+import androidx.transition.TransitionManager;
+import androidx.transition.TransitionSet;
 
 import com.example.charactersofthehogwarts.R;
 
@@ -38,6 +47,7 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        postponeEnterTransition();
         inflatedView = inflater.inflate(R.layout.fragment_main, container, false);
 
         Button griffindorButton = (Button) inflatedView.findViewById(R.id.griffindorButton);
@@ -50,6 +60,7 @@ public class MainFragment extends Fragment {
         buttonSetOnClickListener(ravenclawButton, "Ravenclaw");
         buttonSetOnClickListener(slytherinButton, "Slytherin");
 
+        startPostponedEnterTransition();
         // Inflate the layout for this fragment
         return inflatedView;
     }
@@ -62,7 +73,26 @@ public class MainFragment extends Fragment {
 
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 Fragment fragment = CharactersFragment.newInstance(faculty);
-                fm.beginTransaction().replace(R.id.fragmentContainerView, fragment).addToBackStack(null).commit();
+//                Scene scene1 = Scene.getSceneForLayout((ViewGroup) requireActivity().findViewById(R.id.constraintLayout), R.layout.fragment_main, inflatedView.getContext());
+//                Scene scene2 = Scene.getSceneForLayout((ViewGroup) requireActivity().findViewById(R.id.constraintLayout2), R.layout.fragment_characters, inflatedView.getContext());
+//                TransitionSet set = new TransitionSet();
+//                set.setDuration(1000);
+//                set.addTransition(new Slide());
+//                TransitionManager.go(scene1, set);
+
+                fragment.setEnterTransition(new Slide(Gravity.BOTTOM));
+                fragment.setExitTransition(new Slide(Gravity.LEFT));
+                fragment.setReenterTransition(new Slide(Gravity.LEFT));
+
+
+                //requireParentFragment().setEnterTransition(new Fade());
+                requireParentFragment().setReenterTransition(new Slide(Gravity.TOP));
+                requireParentFragment().setExitTransition(new Slide(Gravity.TOP));
+                //requireParentFragment().setReturnTransition(new Fade());
+
+                fm.beginTransaction().setReorderingAllowed(true).replace(R.id.fragmentContainerView, fragment).addToBackStack(null).commit();
+
+                //fm.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).replace(R.id.fragmentContainerView, fragment).addToBackStack(null).commit();
 
             }
         });

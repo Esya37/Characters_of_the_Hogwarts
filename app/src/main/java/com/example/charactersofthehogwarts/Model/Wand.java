@@ -22,7 +22,7 @@ public class Wand {
     }
 
     public float getLength() {
-        if (length == "") {
+        if (length.isEmpty()) {
             return 0;
         } else {
             return Float.parseFloat(this.length);

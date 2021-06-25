@@ -5,4 +5,14 @@
     <string name="hufflepuff">Пуффендуй</string>
     <string name="ravenclaw">Когтевран</string>
     <string name="slytherin">Слизерин</string>
+
+    <string name="species">Species</string>
+    <string name="yearOfBirth">Year of birth</string>
+    <string name="ancestry">Ancestry</string>
+    <string name="eyeColour">Eye colour</string>
+    <string name="hairColour">Hair colour</string>
+    <string name="patronus">Patronus</string>
+    <string name="post">Post</string>
+    <string name="actor">Actor</string>
+    <string name="status">Status</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.example.charactersofthehogwarts.View.fragments;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,8 @@ public class WandFragment extends Fragment {
     private LiveData<Character> selectedCharacter;
     private MainActivityViewModel model;
     private View inflatedView;
+
+
 
     public WandFragment() {
         // Required empty public constructor
@@ -67,7 +70,7 @@ public class WandFragment extends Fragment {
                     coreTextView.setText(character.getWand().getCore());
                 }
 
-                if (character.getWand().getLength()==0) {
+                if (character.getWand().getLength().isEmpty()) {
                     lengthTextView.setText("unknown");
                 } else {
                     lengthTextView.setText(String.valueOf(character.getWand().getLength()));

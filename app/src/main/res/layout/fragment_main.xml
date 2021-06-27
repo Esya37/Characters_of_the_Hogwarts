@@ -8,6 +8,21 @@
     tools:context=".View.fragments.MainFragment">
 
     <Button
+        android:id="@+id/clearDBButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="#FF0000"
+        android:text="@string/clearDB"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/slytherinButton"
+        app:layout_constraintWidth_percent="0.7" />
+
+    <Button
         android:id="@+id/griffindorButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

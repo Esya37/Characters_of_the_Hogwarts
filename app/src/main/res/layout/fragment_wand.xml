@@ -37,11 +37,10 @@
         android:text="unknown"
         android:textColor="#000000"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBaseline_toBaselineOf="@+id/lengthTextView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/lengthTextView2"
-        app:layout_constraintTop_toBottomOf="@+id/coreTextView" />
+        app:layout_constraintStart_toEndOf="@+id/lengthTextView2" />
 
     <TextView
         android:id="@+id/coreTextView2"
@@ -91,11 +90,10 @@
         android:text="vine"
         android:textColor="#000000"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/coreTextView"
+        app:layout_constraintBaseline_toBaselineOf="@+id/woodTextView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/woodTextView2"
-        app:layout_constraintTop_toBottomOf="@+id/titleWandTextView" />
+        app:layout_constraintStart_toEndOf="@+id/woodTextView2" />
 
     <TextView
         android:id="@+id/woodTextView2"

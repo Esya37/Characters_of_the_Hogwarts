@@ -1,11 +1,19 @@
 package com.example.charactersofthehogwarts.Model;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@Entity(tableName = "characterTable")
 public class Character {
+    @PrimaryKey(autoGenerate = true)
+    private int id;
     private String name;
     private String species;
     private String gender;
@@ -15,6 +23,7 @@ public class Character {
     private String ancestry;
     private String eyeColour;
     private String hairColour;
+    @Ignore
     private Wand wand;
     private String patronus;
     private Boolean hogwartsStudent;
@@ -23,8 +32,14 @@ public class Character {
     private Boolean alive;
     private String image;
 
-    private DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-    private Date tempDate;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return this.name;
@@ -70,8 +85,8 @@ public class Character {
 //        return tempDate;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = format.format(dateOfBirth);
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public String getYearOfBirth() {
@@ -83,8 +98,8 @@ public class Character {
 //        }
     }
 
-    public void setYearOfBirth(int yearOfBirth) {
-        this.yearOfBirth = Integer.toString(yearOfBirth);
+    public void setYearOfBirth(String yearOfBirth) {
+        this.yearOfBirth = yearOfBirth;
     }
 
     public String getAncestry() {

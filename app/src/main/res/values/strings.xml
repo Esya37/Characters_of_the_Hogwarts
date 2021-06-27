@@ -5,6 +5,7 @@
     <string name="hufflepuff">Пуффендуй</string>
     <string name="ravenclaw">Когтевран</string>
     <string name="slytherin">Слизерин</string>
+    <string name="clearDB">Очистить БД</string>
 
     <string name="species">Species</string>
     <string name="yearOfBirth">Year of birth</string>

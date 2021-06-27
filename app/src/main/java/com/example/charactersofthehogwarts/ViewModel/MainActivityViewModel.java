@@ -2,6 +2,7 @@ package com.example.charactersofthehogwarts.ViewModel;
 
 import android.app.Application;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -19,6 +20,7 @@ public class MainActivityViewModel extends ViewModel {
 
     CharactersRepository charactersRepository = new CharactersRepository(MainActivity.getMainApplication());
     private LiveData<List<Character>> characters;
+    private LiveData<Wand> wandLiveData;
     private MutableLiveData<Character> selectedCharacterLiveData = new MutableLiveData<>();
 
 //    public MainActivityViewModel(Application application){
@@ -26,6 +28,7 @@ public class MainActivityViewModel extends ViewModel {
 //        charactersRepository = new CharactersRepository(application);
 //        selectedCharacterLiveData = new MutableLiveData<>();
 //    }
+
 
     public MutableLiveData<Character> getSelectedCharacterLiveData() {
         return selectedCharacterLiveData;
@@ -35,12 +38,39 @@ public class MainActivityViewModel extends ViewModel {
         this.selectedCharacterLiveData.setValue(selectedCharacter);
     }
 
-    public LiveData<List<Character>> getCharacters(String faculty)
-    {
+    public LiveData<List<Character>> getCharacters(String faculty) {
         characters = charactersRepository.getCharacters(faculty);
         return characters;
     }
 
+    public LiveData<List<Character>> getCharactersDB(String faculty) {
+        characters = charactersRepository.getCharactersDB(faculty);
+        return characters;
+    }
+    public LiveData<List<Character>> getAllCharactersDB() {
+        characters = charactersRepository.getAllCharactersDB();
+        return characters;
+    }
 
+
+    public LiveData<Wand> getWandDB(int characterIdFK) {
+        wandLiveData = charactersRepository.getWandDB(characterIdFK);
+        return wandLiveData;
+    }
+
+    public AsyncTask addCharacters(List<Character> characterList) {
+        AsyncTask task = charactersRepository.insertCharacters(characterList);
+        return task;
+    }
+    public void deleteCharacters(List<Character> characterList) {
+        charactersRepository.deleteCharacters(characterList);
+    }
+
+    public void addWand(Wand wand, int characterIdFK) {
+        charactersRepository.insertWand(wand, characterIdFK);
+    }
+    public void deleteWand(Wand wand) {
+        charactersRepository.deleteWand(wand);
+    }
 
 }

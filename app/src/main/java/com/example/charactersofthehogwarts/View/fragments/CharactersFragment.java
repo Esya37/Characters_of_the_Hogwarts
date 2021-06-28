@@ -119,6 +119,7 @@ public class CharactersFragment extends Fragment {
                 if ((characters.isEmpty()) && (dataIsLoadDB == false)) {
                     if (characterList.isEmpty() == false) {
                         dataIsLoadDB = true;
+                        model.addCharacters(characterList);
                     }
                 }
                 if (characters.size() == characterList.size()) {

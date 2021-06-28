@@ -29,7 +29,7 @@ public class Wand {
         this.characterIdFK = characterIdFK;
     }
 
-    public String getLength(){
+    public String getLength() {
         return this.length;
     }
 
@@ -53,15 +53,4 @@ public class Wand {
         this.core = core;
     }
 
-//    public float getLength() {
-//        if (length.isEmpty()) {
-//            return 0;
-//        } else {
-//            return Float.parseFloat(this.length);
-//        }
-//    }
-//
-//    public void setLength(float length) {
-//        this.length = Float.toString(length);
-//    }
 }

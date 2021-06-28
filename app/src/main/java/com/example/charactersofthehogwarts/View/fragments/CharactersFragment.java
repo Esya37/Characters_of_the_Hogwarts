@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,20 +24,14 @@ import androidx.transition.Slide;
 import com.example.charactersofthehogwarts.Model.Character;
 import com.example.charactersofthehogwarts.Model.Wand;
 import com.example.charactersofthehogwarts.R;
-import com.example.charactersofthehogwarts.View.OnBackPressedListener;
 import com.example.charactersofthehogwarts.View.RecyclerViewAdapter;
 import com.example.charactersofthehogwarts.ViewModel.MainActivityViewModel;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CharactersFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class CharactersFragment extends Fragment {      //public class CharactersFragment extends Fragment implements OnBackPressedListener {
+
+public class CharactersFragment extends Fragment {
 
     private static final String ARG_FACULTY = "faculty";
     private static final String ARG_SOURCE = "source";
@@ -50,7 +45,7 @@ public class CharactersFragment extends Fragment {      //public class Character
 
     private boolean dataIsLoad;
     private boolean dataIsLoadDB;
-    private AsyncTask task;
+    Fragment thisFragment;
 
     public CharactersFragment() {
         // Required empty public constructor
@@ -69,22 +64,6 @@ public class CharactersFragment extends Fragment {      //public class Character
     MainActivityViewModel model;
     FragmentManager fm;
 
-
-//    @Override
-//    public void onBackPressed() {
-//
-//        if (task != null) {
-//            if (task.getStatus() == AsyncTask.Status.FINISHED) {
-//                fm = getParentFragmentManager();
-//                fm.popBackStack();
-//            }
-//        } else {
-//            fm = getParentFragmentManager();
-//            fm.popBackStack();
-//        }
-//    }
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,7 +71,7 @@ public class CharactersFragment extends Fragment {      //public class Character
             faculty = getArguments().getString(ARG_FACULTY);
             source = getArguments().getString(ARG_SOURCE);
         }
-
+        thisFragment = this;
         dataIsLoad = false;
         dataIsLoadDB = false;
         characterList = new ArrayList<Character>();
@@ -104,14 +83,13 @@ public class CharactersFragment extends Fragment {      //public class Character
             model.getCharacters(faculty).observe(this, new Observer<List<Character>>() {
                 @Override
                 public void onChanged(List<Character> characters) {
-                    if (!characters.isEmpty() && (characters.get(0).getHouse().equals(faculty))) {        //&& ((faculty == model.getFaculty()) || (model.getFaculty() == null))
+                    if (!characters.isEmpty() && (characters.get(0).getHouse().equals(faculty))) {
                         characterList.clear();
                         characterList.addAll(characters);
                         adapter.notifyDataSetChanged();
                         dataIsLoad = true;
                         addCharactersInDB();
                     }
-                    //startPostponedEnterTransition();
 
                 }
             });
@@ -124,8 +102,6 @@ public class CharactersFragment extends Fragment {      //public class Character
                     characterList.addAll(characters);
                     adapter.notifyDataSetChanged();
                     dataIsLoad = true;
-                    //addCharactersInDB();
-                    //startPostponedEnterTransition();
 
                 }
             });
@@ -143,20 +119,11 @@ public class CharactersFragment extends Fragment {      //public class Character
                 if ((characters.isEmpty()) && (dataIsLoadDB == false)) {
                     if (characterList.isEmpty() == false) {
                         dataIsLoadDB = true;
-                        task = model.addCharacters(characterList);
                     }
                 }
-                if (task != null) {
-                    if (task.getStatus() == AsyncTask.Status.FINISHED) {
-                        task = null;
-                        for (int i = 0; i < characters.size(); i++) {
-                            for (int j = 0; j < characterList.size(); j++) {
-                                if (characters.get(i).getName().equals(characterList.get(j).getName())) {
-                                    characterList.get(j).setId(characters.get(i).getId());
-                                    model.addWand(characterList.get(j).getWand(), characters.get(i).getId());
-                                }
-                            }
-                        }
+                if (characters.size() == characterList.size()) {
+                    for (int i = 0; i < characters.size(); i++) {
+                        characterList.get(i).setId(characters.get(i).getId());
                     }
                 }
             }
@@ -211,7 +178,6 @@ public class CharactersFragment extends Fragment {      //public class Character
     }
 
     private void onItemClick(View view, int i) {
-
         model.getWandDB(characterList.get(i).getId()).observe(getViewLifecycleOwner(), new Observer<Wand>() {
             @Override
             public void onChanged(Wand wand) {
@@ -222,8 +188,7 @@ public class CharactersFragment extends Fragment {      //public class Character
                     Fragment fragment = WandFragment.newInstance();
                     fragment.setEnterTransition(new Slide(Gravity.RIGHT));
                     fragment.setExitTransition(new Slide(Gravity.LEFT));
-                    //fm.beginTransaction().setReorderingAllowed(true).add(R.id.fragmentContainerView, fragment).hide(getParentFragment()).addToBackStack(null).commit();
-                    fm.beginTransaction().setReorderingAllowed(true).replace(R.id.fragmentContainerView, fragment).addToBackStack(null).commit();
+                    fm.beginTransaction().setReorderingAllowed(true).add(R.id.fragmentContainerView, fragment).hide(thisFragment).addToBackStack(null).commit();
 
                 } else {
                     Toast.makeText(getContext(), "Please, check your internet connection", Toast.LENGTH_LONG).show();
@@ -231,23 +196,6 @@ public class CharactersFragment extends Fragment {      //public class Character
             }
         });
 
-//        if(hasConnection(getContext()) == true) {
-//
-//            model.setSelectedCharacterLiveData(characterList.get(i));
-//            FragmentManager fm = getActivity().getSupportFragmentManager();
-//            Fragment fragment = WandFragment.newInstance();
-//            fragment.setEnterTransition(new Slide(Gravity.RIGHT));
-//            fragment.setExitTransition(new Slide(Gravity.LEFT));
-//            //fm.beginTransaction().setReorderingAllowed(true).add(R.id.fragmentContainerView, fragment).hide(getParentFragment()).addToBackStack(null).commit();
-//            fm.beginTransaction().setReorderingAllowed(true).replace(R.id.fragmentContainerView, fragment).addToBackStack(null).commit();
-//
-//        }
-//        else{
-//
-//        }
-
-
     }
-
 
 }

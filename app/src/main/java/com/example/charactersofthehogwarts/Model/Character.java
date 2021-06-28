@@ -74,15 +74,7 @@ public class Character {
     }
 
     public String getDateOfBirth() {
-
         return dateOfBirth;
-//        try {
-//            tempDate = format.parse(this.dateOfBirth);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//            tempDate = new Date(0);
-//        }
-//        return tempDate;
     }
 
     public void setDateOfBirth(String dateOfBirth) {
@@ -91,11 +83,6 @@ public class Character {
 
     public String getYearOfBirth() {
         return yearOfBirth;
-//        if (this.yearOfBirth == "") {
-//            return 0;
-//        } else {
-//            return Integer.parseInt(this.yearOfBirth);
-//        }
     }
 
     public void setYearOfBirth(String yearOfBirth) {

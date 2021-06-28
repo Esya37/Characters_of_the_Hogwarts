@@ -79,8 +79,7 @@ public class MainFragment extends Fragment {
                 model.getAllCharactersDB().observe(getViewLifecycleOwner(), new Observer<List<Character>>() {
                     @Override
                     public void onChanged(List<Character> characters) {
-                        if(!characters.isEmpty())
-                        {
+                        if (!characters.isEmpty()) {
                             model.deleteCharacters(characters);
                         }
                     }
@@ -154,51 +153,5 @@ public class MainFragment extends Fragment {
         });
 
     }
-
-
-//    public void buttonSetOnClickListener(Button button, String faculty) {
-//
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (hasConnection(getContext()) == true) {
-//                    FragmentManager fm = getActivity().getSupportFragmentManager();
-//                    Fragment fragment = CharactersFragment.newInstance(faculty, "internet");
-//
-//                    fragment.setEnterTransition(new Slide(Gravity.BOTTOM));
-//                    fragment.setExitTransition(new Slide(Gravity.LEFT));
-//                    fragment.setReenterTransition(new Slide(Gravity.LEFT));
-//
-//                    requireParentFragment().setReenterTransition(new Slide(Gravity.TOP));
-//                    requireParentFragment().setExitTransition(new Slide(Gravity.TOP));
-//
-//                    fm.beginTransaction().setReorderingAllowed(true).replace(R.id.fragmentContainerView, fragment).addToBackStack(null).commit();
-//                } else {
-//                    model.getCharactersDB(faculty).observe(getViewLifecycleOwner(), new Observer<List<Character>>() {
-//                        @Override
-//                        public void onChanged(List<Character> characters) {
-//                            if (characters.isEmpty() == false) {
-//                                FragmentManager fm = getActivity().getSupportFragmentManager();
-//                                Fragment fragment = CharactersFragment.newInstance(faculty, "DB");
-//
-//                                fragment.setEnterTransition(new Slide(Gravity.BOTTOM));
-//                                fragment.setExitTransition(new Slide(Gravity.LEFT));
-//                                fragment.setReenterTransition(new Slide(Gravity.LEFT));
-//
-//                                requireParentFragment().setReenterTransition(new Slide(Gravity.TOP));
-//                                requireParentFragment().setExitTransition(new Slide(Gravity.TOP));
-//
-//                                fm.beginTransaction().setReorderingAllowed(true).replace(R.id.fragmentContainerView, fragment).addToBackStack(null).commit();
-//
-//                            } else {
-//                                Toast.makeText(getContext(), "Please, check your internet connection", Toast.LENGTH_LONG).show();
-//                            }
-//                        }
-//                    });
-//                }
-//            }
-//        });
-//
-//    }
 
 }

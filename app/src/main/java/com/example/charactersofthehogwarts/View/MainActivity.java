@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static Application mainApplication;
     MainActivityViewModel model;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,24 +24,6 @@ public class MainActivity extends AppCompatActivity {
         mainApplication = getApplication();
         model = new ViewModelProvider(this).get(MainActivityViewModel.class);
 
-    }
-
-    @Override
-    public void onBackPressed() {
-        FragmentManager fm = getSupportFragmentManager();
-        OnBackPressedListener backPressedListener = null;
-        for (Fragment fragment: fm.getFragments()) {
-            if (fragment instanceof  OnBackPressedListener) {
-                backPressedListener = (OnBackPressedListener) fragment;
-                break;
-            }
-        }
-
-        if (backPressedListener != null) {
-            backPressedListener.onBackPressed();
-        } else {
-            super.onBackPressed();
-        }
     }
 
     public static Application getMainApplication() {

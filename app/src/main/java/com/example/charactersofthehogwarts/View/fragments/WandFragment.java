@@ -27,7 +27,6 @@ public class WandFragment extends Fragment {
     private View inflatedView;
 
 
-
     public WandFragment() {
         // Required empty public constructor
     }
@@ -52,7 +51,6 @@ public class WandFragment extends Fragment {
         TextView coreTextView = inflatedView.findViewById(R.id.coreTextView);
         TextView lengthTextView = inflatedView.findViewById(R.id.lengthTextView);
 
-        //model = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(MainActivityViewModel.class);
         model = new ViewModelProvider(getActivity()).get(MainActivityViewModel.class);
         model.getSelectedCharacterLiveData().observe(this.getViewLifecycleOwner(), new Observer<Character>() {
             @Override

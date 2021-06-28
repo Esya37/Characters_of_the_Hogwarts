@@ -1,24 +1,18 @@
 package com.example.charactersofthehogwarts.Model;
 
 import android.app.Application;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 import com.example.charactersofthehogwarts.services.CharacterService;
 import com.example.charactersofthehogwarts.services.RetrofitService;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -59,8 +53,12 @@ public class CharactersRepository {
         return task;
     }
 
+    public static int countOfInsertedCharacters;
+    public static int countOfCharacters;
+    public static String faculty;
+
     private static class InsertCharactersAsyncTask extends AsyncTask<List<Character>, Void, List<Character>> {
-        //TODO Придумать, где можно добавить кнопку "Очистить БД" и написать к ней функционал
+
         private CharacterDAO characterDAO;
         private WandDAO wandDAO;
 
@@ -69,9 +67,29 @@ public class CharactersRepository {
             this.wandDAO = wandDAO;
         }
 
+        @Override
+        protected void onPostExecute(List<Character> characters) {
+            super.onPostExecute(characters);
+            characterDAO.getCharactersDB(characters.get(0).getHouse()).observeForever(new Observer<List<Character>>() {
+                @Override
+                public void onChanged(List<Character> charactersDB) {
+
+                    for (int i = 0; i < characters.size(); i++) {
+                        if ((faculty.equals(characters.get(0).getHouse())) && (countOfInsertedCharacters < countOfCharacters)) {
+                            characters.get(i).getWand().setCharacterIdFK(charactersDB.get(i).getId());
+                            new InsertWandAsyncTask(wandDAO).execute(characters.get(i).getWand());
+                            countOfInsertedCharacters++;
+                        }
+                    }
+                }
+            });
+        }
 
         @Override
         protected List<Character> doInBackground(List<Character>... lists) {
+            countOfCharacters = lists[0].size();
+            countOfInsertedCharacters = 0;
+            faculty = lists[0].get(0).getHouse();
             for (int i = 0; i < lists[0].size(); i++) {
                 characterDAO.insert(lists[0].get(i));
             }
@@ -80,23 +98,21 @@ public class CharactersRepository {
         }
     }
 
-    public void insertWand(Wand wand, int characterIdFK) {
-        new InsertWandAsyncTask(wandDAO, characterIdFK).execute(wand);
+
+    public void insertWand(Wand wand) {
+        new InsertWandAsyncTask(wandDAO).execute(wand);
     }
 
     private static class InsertWandAsyncTask extends AsyncTask<Wand, Void, Void> {
 
         private WandDAO wandDAO;
-        private int characterIdFK;
 
-        public InsertWandAsyncTask(WandDAO wandDAO, int characterIdFK) {
+        public InsertWandAsyncTask(WandDAO wandDAO) {
             this.wandDAO = wandDAO;
-            this.characterIdFK = characterIdFK;
         }
 
         @Override
         protected Void doInBackground(Wand... wands) {
-            wands[0].setCharacterIdFK(characterIdFK);
             wandDAO.insert(wands[0]);
             return null;
         }
@@ -116,7 +132,7 @@ public class CharactersRepository {
 
         @Override
         protected Void doInBackground(List<Character>... lists) {
-            for (int i=0; i<lists[0].size(); i++) {
+            for (int i = 0; i < lists[0].size(); i++) {
                 characterDAO.delete(lists[0].get(i));
             }
             return null;

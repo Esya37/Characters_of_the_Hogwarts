@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -22,12 +23,6 @@ public class MainActivityViewModel extends ViewModel {
     private LiveData<List<Character>> characters;
     private LiveData<Wand> wandLiveData;
     private MutableLiveData<Character> selectedCharacterLiveData = new MutableLiveData<>();
-
-//    public MainActivityViewModel(Application application){
-//        super();
-//        charactersRepository = new CharactersRepository(application);
-//        selectedCharacterLiveData = new MutableLiveData<>();
-//    }
 
 
     public MutableLiveData<Character> getSelectedCharacterLiveData() {
@@ -47,6 +42,7 @@ public class MainActivityViewModel extends ViewModel {
         characters = charactersRepository.getCharactersDB(faculty);
         return characters;
     }
+
     public LiveData<List<Character>> getAllCharactersDB() {
         characters = charactersRepository.getAllCharactersDB();
         return characters;
@@ -62,13 +58,16 @@ public class MainActivityViewModel extends ViewModel {
         AsyncTask task = charactersRepository.insertCharacters(characterList);
         return task;
     }
+
     public void deleteCharacters(List<Character> characterList) {
         charactersRepository.deleteCharacters(characterList);
     }
 
-    public void addWand(Wand wand, int characterIdFK) {
-        charactersRepository.insertWand(wand, characterIdFK);
+
+    public void addWand(Wand wand) {
+        charactersRepository.insertWand(wand);
     }
+
     public void deleteWand(Wand wand) {
         charactersRepository.deleteWand(wand);
     }

@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
+import com.example.charactersofthehogwarts.View.OnDeleteCompleted;
 import com.example.charactersofthehogwarts.services.CharacterService;
 import com.example.charactersofthehogwarts.services.RetrofitService;
 
@@ -48,14 +49,12 @@ public class CharactersRepository {
         return wandDAO.getWand(characterIdFK);
     }
 
-    public AsyncTask insertCharacters(List<Character> characters) {
-        AsyncTask task = new InsertCharactersAsyncTask(characterDAO, wandDAO).execute(characters);
-        return task;
+    public void insertCharacters(List<Character> characters) {
+        new InsertCharactersAsyncTask(characterDAO, wandDAO).execute(characters);
     }
 
-    public static int countOfInsertedCharacters;
-    public static int countOfCharacters;
     public static String faculty;
+    public static boolean allCharactersAdded;
 
     private static class InsertCharactersAsyncTask extends AsyncTask<List<Character>, Void, List<Character>> {
 
@@ -73,12 +72,11 @@ public class CharactersRepository {
             characterDAO.getCharactersDB(characters.get(0).getHouse()).observeForever(new Observer<List<Character>>() {
                 @Override
                 public void onChanged(List<Character> charactersDB) {
-
-                    for (int i = 0; i < characters.size(); i++) {
-                        if ((faculty.equals(characters.get(0).getHouse())) && (countOfInsertedCharacters < countOfCharacters)) {
+                    if ((faculty.equals(characters.get(0).getHouse())) && (allCharactersAdded) && (charactersDB.isEmpty() == false) && (characters.size() == charactersDB.size())) {
+                        for (int i = 0; i < characters.size(); i++) {
+                            characters.get(i).getWand().setId(charactersDB.get(i).getId());
                             characters.get(i).getWand().setCharacterIdFK(charactersDB.get(i).getId());
                             new InsertWandAsyncTask(wandDAO).execute(characters.get(i).getWand());
-                            countOfInsertedCharacters++;
                         }
                     }
                 }
@@ -87,13 +85,12 @@ public class CharactersRepository {
 
         @Override
         protected List<Character> doInBackground(List<Character>... lists) {
-            countOfCharacters = lists[0].size();
-            countOfInsertedCharacters = 0;
             faculty = lists[0].get(0).getHouse();
+            allCharactersAdded = false;
             for (int i = 0; i < lists[0].size(); i++) {
                 characterDAO.insert(lists[0].get(i));
             }
-
+            allCharactersAdded = true;
             return lists[0];
         }
     }
@@ -118,16 +115,52 @@ public class CharactersRepository {
         }
     }
 
-    public void deleteCharacters(List<Character> characters) {
-        new DeleteCharactersAsyncTask(characterDAO).execute(characters);
+    public void deleteAllCharacters(OnDeleteCompleted listener) {
+        new DeleteAllCharactersAsyncTask(characterDAO, listener).execute();
+    }
+
+    private static class DeleteAllCharactersAsyncTask extends AsyncTask<Void, Void, Void> {
+
+        private CharacterDAO characterDAO;
+        private OnDeleteCompleted listener;
+
+        public DeleteAllCharactersAsyncTask(CharacterDAO characterDAO, OnDeleteCompleted listener) {
+            this.characterDAO = characterDAO;
+            this.listener = listener;
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            super.onPostExecute(unused);
+            listener.onDeleteCompleted();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            characterDAO.deleteAll();
+            return null;
+        }
+    }
+
+
+    public void deleteCharacters(List<Character> characters, OnDeleteCompleted listener) {
+        new DeleteCharactersAsyncTask(characterDAO, listener).execute(characters);
     }
 
     private static class DeleteCharactersAsyncTask extends AsyncTask<List<Character>, Void, Void> {
 
         private CharacterDAO characterDAO;
+        private OnDeleteCompleted listener;
 
-        public DeleteCharactersAsyncTask(CharacterDAO characterDAO) {
+        public DeleteCharactersAsyncTask(CharacterDAO characterDAO, OnDeleteCompleted listener) {
             this.characterDAO = characterDAO;
+            this.listener = listener;
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            super.onPostExecute(unused);
+            listener.onDeleteCompleted();
         }
 
         @Override

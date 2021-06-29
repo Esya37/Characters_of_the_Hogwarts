@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "wandTable", foreignKeys = @ForeignKey(entity = Character.class, parentColumns = "id", childColumns = "characterIdFK", onDelete = ForeignKey.CASCADE))
 public class Wand {
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = false)
     private int id;
     private int characterIdFK;
     private String wood;

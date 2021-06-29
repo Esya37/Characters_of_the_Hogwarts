@@ -216,7 +216,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             super(view);
 
             isExpanded = new boolean[characters.size()];
-            for(boolean bool : isExpanded){
+            for (boolean bool : isExpanded) {
                 bool = false;
             }
 
@@ -248,7 +248,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             collapseButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(isExpanded[getAbsoluteAdapterPosition()]==false) {
+                    if (isExpanded[getAbsoluteAdapterPosition()] == false) {
                         speciesTextView.setVisibility(View.VISIBLE);
                         yearOfBirthTextView.setVisibility(View.VISIBLE);
                         ancestryTextView.setVisibility(View.VISIBLE);
@@ -268,12 +268,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         actorTextView2.setVisibility(View.VISIBLE);
                         aliveTextView2.setVisibility(View.VISIBLE);
                         isExpanded[getAbsoluteAdapterPosition()] = true;
-                        collapseButton.setCompoundDrawablesWithIntrinsicBounds(android.R.drawable.arrow_up_float, 0,0,0);
+                        collapseButton.setCompoundDrawablesWithIntrinsicBounds(android.R.drawable.arrow_up_float, 0, 0, 0);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             collapseButton.setCompoundDrawableTintList(ContextCompat.getColorStateList(context, R.color.black));
                         }
-                    }
-                    else{
+                    } else {
                         speciesTextView.setVisibility(View.GONE);
                         yearOfBirthTextView.setVisibility(View.GONE);
                         ancestryTextView.setVisibility(View.GONE);
@@ -293,7 +292,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         actorTextView2.setVisibility(View.GONE);
                         aliveTextView2.setVisibility(View.GONE);
                         isExpanded[getAbsoluteAdapterPosition()] = false;
-                        collapseButton.setCompoundDrawablesWithIntrinsicBounds(android.R.drawable.arrow_down_float, 0,0,0);
+                        collapseButton.setCompoundDrawablesWithIntrinsicBounds(android.R.drawable.arrow_down_float, 0, 0, 0);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             collapseButton.setCompoundDrawableTintList(ContextCompat.getColorStateList(context, R.color.black));
                         }

@@ -3,29 +3,24 @@ package com.example.charactersofthehogwarts.View.fragments;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.transition.Fade;
-import androidx.transition.Scene;
 import androidx.transition.Slide;
-import androidx.transition.Transition;
-import androidx.transition.TransitionManager;
-import androidx.transition.TransitionSet;
 
 import com.example.charactersofthehogwarts.Model.Character;
 import com.example.charactersofthehogwarts.R;
+import com.example.charactersofthehogwarts.View.OnDeleteCompleted;
 import com.example.charactersofthehogwarts.ViewModel.MainActivityViewModel;
 
 import java.util.List;
@@ -55,6 +50,11 @@ public class MainFragment extends Fragment {
 
     View inflatedView;
     MainActivityViewModel model;
+    Button gryffindorButton;
+    Button hufflepuffButton;
+    Button ravenclawButton;
+    Button slytherinButton;
+    Button clearDBButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -63,16 +63,18 @@ public class MainFragment extends Fragment {
         inflatedView = inflater.inflate(R.layout.fragment_main, container, false);
         model = new ViewModelProvider(getActivity()).get(MainActivityViewModel.class);
 
-        Button griffindorButton = (Button) inflatedView.findViewById(R.id.griffindorButton);
-        Button hufflepuffButton = (Button) inflatedView.findViewById(R.id.hufflepuffButton);
-        Button ravenclawButton = (Button) inflatedView.findViewById(R.id.ravenclawButton);
-        Button slytherinButton = (Button) inflatedView.findViewById(R.id.slytherinButton);
-        Button clearDBButton = (Button) inflatedView.findViewById(R.id.clearDBButton);
+        gryffindorButton = (Button) inflatedView.findViewById(R.id.gryffindorButton);
+        hufflepuffButton = (Button) inflatedView.findViewById(R.id.hufflepuffButton);
+        ravenclawButton = (Button) inflatedView.findViewById(R.id.ravenclawButton);
+        slytherinButton = (Button) inflatedView.findViewById(R.id.slytherinButton);
+        clearDBButton = (Button) inflatedView.findViewById(R.id.clearDBButton);
 
-        buttonSetOnClickListener(griffindorButton, "Gryffindor");
+        buttonSetOnClickListener(gryffindorButton, "Gryffindor");
         buttonSetOnClickListener(hufflepuffButton, "Hufflepuff");
         buttonSetOnClickListener(ravenclawButton, "Ravenclaw");
         buttonSetOnClickListener(slytherinButton, "Slytherin");
+
+
         clearDBButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,7 +82,22 @@ public class MainFragment extends Fragment {
                     @Override
                     public void onChanged(List<Character> characters) {
                         if (!characters.isEmpty()) {
-                            model.deleteCharacters(characters);
+                            gryffindorButton.setClickable(false);
+                            hufflepuffButton.setClickable(false);
+                            ravenclawButton.setClickable(false);
+                            slytherinButton.setClickable(false);
+                            clearDBButton.setClickable(false);
+                            model.deleteAllCharacters(new OnDeleteCompleted() {
+                                @Override
+                                public void onDeleteCompleted() {
+                                    gryffindorButton.setClickable(true);
+                                    hufflepuffButton.setClickable(true);
+                                    ravenclawButton.setClickable(true);
+                                    slytherinButton.setClickable(true);
+                                    clearDBButton.setClickable(true);
+                                }
+                            });
+
                         }
                     }
                 });

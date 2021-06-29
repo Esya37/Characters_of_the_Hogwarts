@@ -14,6 +14,7 @@ import com.example.charactersofthehogwarts.Model.Character;
 import com.example.charactersofthehogwarts.Model.CharactersRepository;
 import com.example.charactersofthehogwarts.Model.Wand;
 import com.example.charactersofthehogwarts.View.MainActivity;
+import com.example.charactersofthehogwarts.View.OnDeleteCompleted;
 
 import java.util.List;
 
@@ -54,13 +55,16 @@ public class MainActivityViewModel extends ViewModel {
         return wandLiveData;
     }
 
-    public AsyncTask addCharacters(List<Character> characterList) {
-        AsyncTask task = charactersRepository.insertCharacters(characterList);
-        return task;
+    public void addCharacters(List<Character> characterList) {
+        charactersRepository.insertCharacters(characterList);
     }
 
-    public void deleteCharacters(List<Character> characterList) {
-        charactersRepository.deleteCharacters(characterList);
+    public void deleteAllCharacters(OnDeleteCompleted listener) {
+        charactersRepository.deleteAllCharacters(listener);
+    }
+
+    public void deleteCharacters(List<Character> characterList, OnDeleteCompleted listener) {
+        charactersRepository.deleteCharacters(characterList, listener);
     }
 
 

@@ -10,7 +10,7 @@ import androidx.room.Query;
 @Dao
 public interface WandDAO {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Wand wand);
 
     @Delete

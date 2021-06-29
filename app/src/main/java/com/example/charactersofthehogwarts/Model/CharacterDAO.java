@@ -18,6 +18,9 @@ public interface CharacterDAO {
     @Delete
     void delete(Character character);
 
+    @Query("Delete from characterTable")
+    void deleteAll();
+
     @Query("Select * from characterTable where house ==:faculty")
     LiveData<List<Character>> getCharactersDB(String faculty);
 

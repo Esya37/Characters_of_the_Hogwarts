@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_main" >
         <action
             android:id="@+id/action_mainFragment_to_charactersFragment"
-            app:destination="@id/charactersFragment" />
+            app:destination="@id/charactersFragment"
+            app:enterAnim="@anim/translate_from_bottom_to_top"
+            app:exitAnim="@anim/translate_from_nothing_to_nothing"
+            app:popEnterAnim="@anim/translate_from_nothing_to_nothing"
+            app:popExitAnim="@anim/translate_from_top_to_bottom" />
     </fragment>
     <fragment
         android:id="@+id/charactersFragment"
@@ -21,7 +25,19 @@
         tools:layout="@layout/fragment_characters" >
         <action
             android:id="@+id/action_charactersFragment_to_wandFragment"
-            app:destination="@id/wandFragment" />
+            app:destination="@id/wandFragment"
+            app:enterAnim="@anim/translate_from_right_to_left"
+            app:exitAnim="@anim/exit_translate_from_right_to_left"
+            app:popEnterAnim="@anim/translate_from_left_to_right"
+            app:popExitAnim="@anim/exit_translate_from_left_to_right" />
+        <argument
+            android:name="faculty"
+            app:argType="string"
+            android:defaultValue="unknown :(" />
+        <argument
+            android:name="source"
+            app:argType="string"
+            android:defaultValue="internet" />
     </fragment>
     <fragment
         android:id="@+id/wandFragment"

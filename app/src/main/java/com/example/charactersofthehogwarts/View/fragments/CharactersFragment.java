@@ -1,11 +1,10 @@
 package com.example.charactersofthehogwarts.View.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +12,15 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.Slide;
@@ -43,8 +47,8 @@ public class CharactersFragment extends Fragment {
     RecyclerView charactersRecyclerView;
     RecyclerViewAdapter adapter;
 
-    private boolean dataIsLoad;
-    private boolean dataIsLoadDB;
+    private boolean isDataLoaded;
+    private boolean isDataLoadedDB;
     Fragment thisFragment;
 
     public CharactersFragment() {
@@ -72,13 +76,13 @@ public class CharactersFragment extends Fragment {
             source = getArguments().getString(ARG_SOURCE);
         }
         thisFragment = this;
-        dataIsLoad = false;
-        dataIsLoadDB = false;
+        isDataLoaded = false;
+        isDataLoadedDB = false;
         characterList = new ArrayList<Character>();
 
         model = new ViewModelProvider(getActivity()).get(MainActivityViewModel.class);
 
-        if (source == "internet") {
+        if (source.equals("internet")) {
 
             model.getCharacters(faculty).observe(this, new Observer<List<Character>>() {
                 @Override
@@ -87,21 +91,21 @@ public class CharactersFragment extends Fragment {
                         characterList.clear();
                         characterList.addAll(characters);
                         adapter.notifyDataSetChanged();
-                        dataIsLoad = true;
+                        isDataLoaded = true;
                         addCharactersInDB();
                     }
 
                 }
             });
         }
-        if (source == "DB") {
+        if (source.equals("DB")) {
             model.getCharactersDB(faculty).observe(this, new Observer<List<Character>>() {
                 @Override
                 public void onChanged(List<Character> characters) {
                     characterList.clear();
                     characterList.addAll(characters);
                     adapter.notifyDataSetChanged();
-                    dataIsLoad = true;
+                    isDataLoaded = true;
 
                 }
             });
@@ -116,9 +120,9 @@ public class CharactersFragment extends Fragment {
         model.getCharactersDB(faculty).observe(this, new Observer<List<Character>>() {
             @Override
             public void onChanged(List<Character> characters) {
-                if ((characters.isEmpty()) && (dataIsLoadDB == false)) {
-                    if (characterList.isEmpty() == false) {
-                        dataIsLoadDB = true;
+                if ((characters.isEmpty()) && (!isDataLoadedDB)) {
+                    if (!characterList.isEmpty()) {
+                        isDataLoadedDB = true;
                         model.addCharacters(characterList);
                     }
                 }
@@ -166,7 +170,7 @@ public class CharactersFragment extends Fragment {
         viewTreeObserver.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
-                if (dataIsLoad) {
+                if (isDataLoaded) {
                     startPostponedEnterTransition();
                     charactersRecyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
                 }
@@ -178,6 +182,15 @@ public class CharactersFragment extends Fragment {
         return inflatedView;
     }
 
+    NavController navController;
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        navController = Navigation.findNavController(view);
+
+    }
+
     private void onItemClick(View view, int i) {
         model.getWandDB(characterList.get(i).getId()).observe(getViewLifecycleOwner(), new Observer<Wand>() {
             @Override
@@ -185,11 +198,7 @@ public class CharactersFragment extends Fragment {
                 if (wand != null) {
                     characterList.get(i).setWand(wand);
                     model.setSelectedCharacterLiveData(characterList.get(i));
-                    FragmentManager fm = getActivity().getSupportFragmentManager();
-                    Fragment fragment = WandFragment.newInstance();
-                    fragment.setEnterTransition(new Slide(Gravity.RIGHT));
-                    fragment.setExitTransition(new Slide(Gravity.LEFT));
-                    fm.beginTransaction().setReorderingAllowed(true).add(R.id.fragmentContainerView, fragment).hide(thisFragment).addToBackStack(null).commit();
+                    navController.navigate(R.id.action_charactersFragment_to_wandFragment);
 
                 } else {
                     Toast.makeText(getContext(), "Please, check your internet connection", Toast.LENGTH_LONG).show();

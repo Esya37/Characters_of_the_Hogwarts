@@ -4,6 +4,7 @@ import android.app.Application;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
@@ -18,12 +19,19 @@ import com.example.charactersofthehogwarts.View.OnDeleteCompleted;
 
 import java.util.List;
 
-public class MainActivityViewModel extends ViewModel {
+public class MainActivityViewModel extends AndroidViewModel {
 
-    CharactersRepository charactersRepository = new CharactersRepository(MainActivity.getMainApplication());
+    CharactersRepository charactersRepository;
+    private Application application;
     private LiveData<List<Character>> characters;
     private LiveData<Wand> wandLiveData;
-    private MutableLiveData<Character> selectedCharacterLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Character> selectedCharacterLiveData = new MutableLiveData<>();
+
+    public MainActivityViewModel(Application application) {
+        super(application);
+        this.application = application;
+        charactersRepository = new CharactersRepository(application);
+    }
 
 
     public MutableLiveData<Character> getSelectedCharacterLiveData() {

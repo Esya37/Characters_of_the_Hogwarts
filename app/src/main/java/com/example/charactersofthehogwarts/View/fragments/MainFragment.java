@@ -12,10 +12,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.transition.Slide;
 
 import com.example.charactersofthehogwarts.Model.Character;
@@ -25,11 +29,6 @@ import com.example.charactersofthehogwarts.ViewModel.MainActivityViewModel;
 
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MainFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class MainFragment extends Fragment {
 
     private List<Character> characterList;
@@ -126,6 +125,15 @@ public class MainFragment extends Fragment {
         return false;
     }
 
+    NavController navController;
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        navController = Navigation.findNavController(view);
+
+    }
+
     public void buttonSetOnClickListener(Button button, String faculty) {
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -134,32 +142,21 @@ public class MainFragment extends Fragment {
                 model.getCharactersDB(faculty).observe(getViewLifecycleOwner(), new Observer<List<Character>>() {
                     @Override
                     public void onChanged(List<Character> characters) {
-                        if (characters.isEmpty() == false) {
-                            FragmentManager fm = getActivity().getSupportFragmentManager();
-                            Fragment fragment = CharactersFragment.newInstance(faculty, "DB");
+                        if (!characters.isEmpty()) {
 
-                            fragment.setEnterTransition(new Slide(Gravity.BOTTOM));
-                            fragment.setExitTransition(new Slide(Gravity.LEFT));
-                            fragment.setReenterTransition(new Slide(Gravity.LEFT));
-
-                            requireParentFragment().setReenterTransition(new Slide(Gravity.TOP));
-                            requireParentFragment().setExitTransition(new Slide(Gravity.TOP));
-
-                            fm.beginTransaction().setReorderingAllowed(true).replace(R.id.fragmentContainerView, fragment).addToBackStack(null).commit();
+                            Bundle bundle = new Bundle();
+                            bundle.putString("faculty", faculty);
+                            bundle.putString("source", "DB");
+                            navController.navigate(R.id.action_mainFragment_to_charactersFragment, bundle);
 
                         } else {
-                            if (hasConnection(getContext()) == true) {
-                                FragmentManager fm = getActivity().getSupportFragmentManager();
-                                Fragment fragment = CharactersFragment.newInstance(faculty, "internet");
+                            if (hasConnection(getContext())) {
 
-                                fragment.setEnterTransition(new Slide(Gravity.BOTTOM));
-                                fragment.setExitTransition(new Slide(Gravity.LEFT));
-                                fragment.setReenterTransition(new Slide(Gravity.LEFT));
+                                Bundle bundle = new Bundle();
+                                bundle.putString("faculty", faculty);
+                                bundle.putString("source", "internet");
+                                navController.navigate(R.id.action_mainFragment_to_charactersFragment, bundle);
 
-                                requireParentFragment().setReenterTransition(new Slide(Gravity.TOP));
-                                requireParentFragment().setExitTransition(new Slide(Gravity.TOP));
-
-                                fm.beginTransaction().setReorderingAllowed(true).replace(R.id.fragmentContainerView, fragment).addToBackStack(null).commit();
                             } else {
                                 Toast.makeText(getContext(), "Please, check your internet connection", Toast.LENGTH_LONG).show();
                             }

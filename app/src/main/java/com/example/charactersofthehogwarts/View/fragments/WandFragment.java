@@ -56,23 +56,9 @@ public class WandFragment extends Fragment {
             @Override
             public void onChanged(Character character) {
                 titleTextView.setText("Wand of " + character.getName());
-                if (character.getWand().getWood().isEmpty()) {
-                    woodTextView.setText("unknown");
-                } else {
-                    woodTextView.setText(character.getWand().getWood());
-                }
-
-                if (character.getWand().getCore().isEmpty()) {
-                    coreTextView.setText("unknown");
-                } else {
-                    coreTextView.setText(character.getWand().getCore());
-                }
-
-                if (character.getWand().getLength().isEmpty()) {
-                    lengthTextView.setText("unknown");
-                } else {
-                    lengthTextView.setText(String.valueOf(character.getWand().getLength()));
-                }
+                woodTextView.setText(character.getWand().getWood());
+                coreTextView.setText(character.getWand().getCore());
+                lengthTextView.setText(String.valueOf(character.getWand().getLength()));
             }
         });
         // Inflate the layout for this fragment

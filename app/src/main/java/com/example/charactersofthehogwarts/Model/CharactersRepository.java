@@ -54,7 +54,7 @@ public class CharactersRepository {
     }
 
     public static String faculty;
-    public static boolean allCharactersAdded;
+    public static boolean isAllCharactersAdded;
 
     private static class InsertCharactersAsyncTask extends AsyncTask<List<Character>, Void, List<Character>> {
 
@@ -72,7 +72,7 @@ public class CharactersRepository {
             characterDAO.getCharactersDB(characters.get(0).getHouse()).observeForever(new Observer<List<Character>>() {
                 @Override
                 public void onChanged(List<Character> charactersDB) {
-                    if ((faculty.equals(characters.get(0).getHouse())) && (allCharactersAdded) && (charactersDB.isEmpty() == false) && (characters.size() == charactersDB.size())) {
+                    if ((faculty.equals(characters.get(0).getHouse())) && (isAllCharactersAdded) && (!charactersDB.isEmpty()) && (characters.size() == charactersDB.size())) {
                         for (int i = 0; i < characters.size(); i++) {
                             characters.get(i).getWand().setId(charactersDB.get(i).getId());
                             characters.get(i).getWand().setCharacterIdFK(charactersDB.get(i).getId());
@@ -86,11 +86,11 @@ public class CharactersRepository {
         @Override
         protected List<Character> doInBackground(List<Character>... lists) {
             faculty = lists[0].get(0).getHouse();
-            allCharactersAdded = false;
+            isAllCharactersAdded = false;
             for (int i = 0; i < lists[0].size(); i++) {
                 characterDAO.insert(lists[0].get(i));
             }
-            allCharactersAdded = true;
+            isAllCharactersAdded = true;
             return lists[0];
         }
     }
@@ -192,78 +192,23 @@ public class CharactersRepository {
     }
 
     public MutableLiveData<List<Character>> getCharacters(String faculty) {
-        switch (faculty) {
-            case ("Gryffindor"):
-                call = characterService.getGriffindorCharacters();
-                call.enqueue(new Callback<List<Character>>() {
-                    @Override
-                    public void onResponse(Call<List<Character>> call, Response<List<Character>> response) {
-                        if (response.isSuccessful()) {
-                            characters.setValue(response.body());
-                        }
-                    }
 
-                    @Override
-                    public void onFailure(Call<List<Character>> call, Throwable t) {
-                        t.printStackTrace();
-                        Log.d("someTag", "something wrong ((");
-                    }
-                });
-                break;
-            case ("Hufflepuff"):
-                call = characterService.getHufflepuffCharacters();
-                call.enqueue(new Callback<List<Character>>() {
-                    @Override
-                    public void onResponse(Call<List<Character>> call, Response<List<Character>> response) {
-                        if (response.isSuccessful()) {
-                            characters.setValue(response.body());
-                        }
-                    }
+        call = characterService.getCharacters(faculty);
+        call.enqueue(new Callback<List<Character>>() {
+            @Override
+            public void onResponse(Call<List<Character>> call, Response<List<Character>> response) {
+                if (response.isSuccessful()) {
+                    characters.setValue(response.body());
+                }
+            }
 
-                    @Override
-                    public void onFailure(Call<List<Character>> call, Throwable t) {
-                        t.printStackTrace();
-                        Log.d("someTag", "something wrong ((");
-                    }
-                });
-                break;
-            case ("Ravenclaw"):
-                call = characterService.getRavenclawCharacters();
-                call.enqueue(new Callback<List<Character>>() {
-                    @Override
-                    public void onResponse(Call<List<Character>> call, Response<List<Character>> response) {
-                        if (response.isSuccessful()) {
-                            characters.setValue(response.body());
-                        }
-                    }
+            @Override
+            public void onFailure(Call<List<Character>> call, Throwable t) {
+                t.printStackTrace();
+                Log.d("someTag", "something wrong ((");
+            }
+        });
 
-                    @Override
-                    public void onFailure(Call<List<Character>> call, Throwable t) {
-                        t.printStackTrace();
-                        Log.d("someTag", "something wrong ((");
-                    }
-                });
-                break;
-            case ("Slytherin"):
-                call = characterService.getSlytherinCharacters();
-                call.enqueue(new Callback<List<Character>>() {
-                    @Override
-                    public void onResponse(Call<List<Character>> call, Response<List<Character>> response) {
-                        if (response.isSuccessful()) {
-                            characters.setValue(response.body());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<Character>> call, Throwable t) {
-                        t.printStackTrace();
-                        Log.d("someTag", "something wrong ((");
-                    }
-                });
-                break;
-            default:
-                break;
-        }
         return characters;
     }
 

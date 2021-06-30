@@ -16,4 +16,6 @@
     <string name="post">Post</string>
     <string name="actor">Actor</string>
     <string name="status">Status</string>
+
+    <string name="unknown">unknown</string>
 </resources>

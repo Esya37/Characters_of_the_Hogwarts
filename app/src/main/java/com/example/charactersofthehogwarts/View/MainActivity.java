@@ -14,19 +14,14 @@ import com.example.charactersofthehogwarts.ViewModel.MainActivityViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static Application mainApplication;
     MainActivityViewModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mainApplication = getApplication();
         model = new ViewModelProvider(this).get(MainActivityViewModel.class);
 
     }
 
-    public static Application getMainApplication() {
-        return mainApplication;
-    }
 }

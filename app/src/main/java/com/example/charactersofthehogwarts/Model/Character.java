@@ -1,14 +1,8 @@
 package com.example.charactersofthehogwarts.Model;
 
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @Entity(tableName = "characterTable")
 public class Character {
@@ -129,7 +123,7 @@ public class Character {
         this.patronus = patronus;
     }
 
-    public boolean getHogwartsStudent() {
+    public boolean isHogwartsStudent() {
         return this.hogwartsStudent;
     }
 
@@ -137,7 +131,7 @@ public class Character {
         this.hogwartsStudent = hogwartsStudent;
     }
 
-    public boolean getHogwartsStaff() {
+    public boolean isHogwartsStaff() {
         return this.hogwartsStaff;
     }
 
@@ -153,7 +147,7 @@ public class Character {
         this.actor = actor;
     }
 
-    public boolean getAlive() {
+    public boolean isAlive() {
         return this.alive;
     }
 

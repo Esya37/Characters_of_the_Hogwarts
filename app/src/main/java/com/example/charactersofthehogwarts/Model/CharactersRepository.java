@@ -1,18 +1,20 @@
 package com.example.charactersofthehogwarts.Model;
 
 import android.app.Application;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 
 import com.example.charactersofthehogwarts.View.OnDeleteCompleted;
 import com.example.charactersofthehogwarts.services.CharacterService;
 import com.example.charactersofthehogwarts.services.RetrofitService;
 
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,6 +24,7 @@ public class CharactersRepository {
 
     private CharacterService characterService;
     private Call<List<Character>> call;
+    ExecutorService executorService;
 
     private CharacterDAO characterDAO;
     private WandDAO wandDAO;
@@ -34,161 +37,102 @@ public class CharactersRepository {
         wandDAO = charactersDB.getWandDAO();
         characterService = RetrofitService.getRetrofitService();
         characters = new MutableLiveData<>();
+
     }
 
     public LiveData<List<Character>> getCharactersDB(String faculty) {
         return characterDAO.getCharactersDB(faculty);
     }
 
+    public List<Character> getCharactersDBList(String faculty) {
+        return characterDAO.getCharactersDBList(faculty);
+    }
+
     public LiveData<List<Character>> getAllCharactersDB() {
         return characterDAO.getAllCharactersDB();
     }
-
 
     public LiveData<Wand> getWandDB(int characterIdFK) {
         return wandDAO.getWand(characterIdFK);
     }
 
     public void insertCharacters(List<Character> characters) {
-        new InsertCharactersAsyncTask(characterDAO, wandDAO).execute(characters);
-    }
 
-    public static String faculty;
-    public static boolean isAllCharactersAdded;
-
-    private static class InsertCharactersAsyncTask extends AsyncTask<List<Character>, Void, List<Character>> {
-
-        private CharacterDAO characterDAO;
-        private WandDAO wandDAO;
-
-        public InsertCharactersAsyncTask(CharacterDAO characterDAO, WandDAO wandDAO) {
-            this.characterDAO = characterDAO;
-            this.wandDAO = wandDAO;
-        }
-
-        @Override
-        protected void onPostExecute(List<Character> characters) {
-            super.onPostExecute(characters);
-            characterDAO.getCharactersDB(characters.get(0).getHouse()).observeForever(new Observer<List<Character>>() {
-                @Override
-                public void onChanged(List<Character> charactersDB) {
-                    if ((faculty.equals(characters.get(0).getHouse())) && (isAllCharactersAdded) && (!charactersDB.isEmpty()) && (characters.size() == charactersDB.size())) {
-                        for (int i = 0; i < characters.size(); i++) {
-                            characters.get(i).getWand().setId(charactersDB.get(i).getId());
-                            characters.get(i).getWand().setCharacterIdFK(charactersDB.get(i).getId());
-                            new InsertWandAsyncTask(wandDAO).execute(characters.get(i).getWand());
-                        }
-                    }
+        executorService = Executors.newSingleThreadExecutor();
+        Callable<Boolean> insertCharacters = new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                for (int i = 0; i < characters.size(); i++) {
+                    characterDAO.insert(characters.get(i));
                 }
-            });
-        }
-
-        @Override
-        protected List<Character> doInBackground(List<Character>... lists) {
-            faculty = lists[0].get(0).getHouse();
-            isAllCharactersAdded = false;
-            for (int i = 0; i < lists[0].size(); i++) {
-                characterDAO.insert(lists[0].get(i));
+                return null;
             }
-            isAllCharactersAdded = true;
-            return lists[0];
-        }
-    }
+        };
+        Callable<Boolean> insertWand = new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                List<Character> charactersDB = characterDAO.getCharactersDBList(characters.get(0).getHouse());
+                for (int i = 0; i < characters.size(); i++) {
+                    characters.get(i).getWand().setId(charactersDB.get(i).getId());
+                    characters.get(i).getWand().setCharacterIdFK(charactersDB.get(i).getId());
+                    wandDAO.insert(characters.get(i).getWand());
+                }
+                return null;
+            }
 
+        };
+
+        try {
+            executorService.submit(insertCharacters).get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        try {
+            executorService.submit(insertWand).get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        executorService.shutdown();
+
+    }
 
     public void insertWand(Wand wand) {
-        new InsertWandAsyncTask(wandDAO).execute(wand);
-    }
+        executorService = Executors.newSingleThreadExecutor();
+        Callable<Boolean> insertWand = new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                wandDAO.insert(wand);
+                return null;
+            }
 
-    private static class InsertWandAsyncTask extends AsyncTask<Wand, Void, Void> {
-
-        private WandDAO wandDAO;
-
-        public InsertWandAsyncTask(WandDAO wandDAO) {
-            this.wandDAO = wandDAO;
+        };
+        try {
+            executorService.submit(insertWand).get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
         }
-
-        @Override
-        protected Void doInBackground(Wand... wands) {
-            wandDAO.insert(wands[0]);
-            return null;
-        }
+        executorService.shutdown();
     }
 
     public void deleteAllCharacters(OnDeleteCompleted listener) {
-        new DeleteAllCharactersAsyncTask(characterDAO, listener).execute();
-    }
-
-    private static class DeleteAllCharactersAsyncTask extends AsyncTask<Void, Void, Void> {
-
-        private CharacterDAO characterDAO;
-        private OnDeleteCompleted listener;
-
-        public DeleteAllCharactersAsyncTask(CharacterDAO characterDAO, OnDeleteCompleted listener) {
-            this.characterDAO = characterDAO;
-            this.listener = listener;
-        }
-
-        @Override
-        protected void onPostExecute(Void unused) {
-            super.onPostExecute(unused);
-            listener.onDeleteCompleted();
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            characterDAO.deleteAll();
-            return null;
-        }
-    }
-
-
-    public void deleteCharacters(List<Character> characters, OnDeleteCompleted listener) {
-        new DeleteCharactersAsyncTask(characterDAO, listener).execute(characters);
-    }
-
-    private static class DeleteCharactersAsyncTask extends AsyncTask<List<Character>, Void, Void> {
-
-        private CharacterDAO characterDAO;
-        private OnDeleteCompleted listener;
-
-        public DeleteCharactersAsyncTask(CharacterDAO characterDAO, OnDeleteCompleted listener) {
-            this.characterDAO = characterDAO;
-            this.listener = listener;
-        }
-
-        @Override
-        protected void onPostExecute(Void unused) {
-            super.onPostExecute(unused);
-            listener.onDeleteCompleted();
-        }
-
-        @Override
-        protected Void doInBackground(List<Character>... lists) {
-            for (int i = 0; i < lists[0].size(); i++) {
-                characterDAO.delete(lists[0].get(i));
+        executorService = Executors.newSingleThreadExecutor();
+        Callable<Boolean> deleteAllCharacters = new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                characterDAO.deleteAll();
+                return null;
             }
-            return null;
+
+        };
+        try {
+            executorService.submit(deleteAllCharacters).get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
         }
-    }
+        listener.onDeleteCompleted();
+        executorService.shutdown();
 
-    public void deleteWand(Wand wand) {
-        new DeleteWandAsyncTask(wandDAO).execute(wand);
-    }
-
-    private static class DeleteWandAsyncTask extends AsyncTask<Wand, Void, Void> {
-
-        private WandDAO wandDAO;
-
-        public DeleteWandAsyncTask(WandDAO wandDAO) {
-            this.wandDAO = wandDAO;
-        }
-
-        @Override
-        protected Void doInBackground(Wand... wands) {
-            wandDAO.delete(wands[0]);
-            return null;
-        }
     }
 
     public MutableLiveData<List<Character>> getCharacters(String faculty) {

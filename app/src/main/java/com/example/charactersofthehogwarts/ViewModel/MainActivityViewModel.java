@@ -1,20 +1,14 @@
 package com.example.charactersofthehogwarts.ViewModel;
 
 import android.app.Application;
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.example.charactersofthehogwarts.Model.Character;
 import com.example.charactersofthehogwarts.Model.CharactersRepository;
 import com.example.charactersofthehogwarts.Model.Wand;
-import com.example.charactersofthehogwarts.View.MainActivity;
 import com.example.charactersofthehogwarts.View.OnDeleteCompleted;
 
 import java.util.List;
@@ -25,6 +19,7 @@ public class MainActivityViewModel extends AndroidViewModel {
     private Application application;
     private LiveData<List<Character>> characters;
     private LiveData<Wand> wandLiveData;
+    private List<Character> characterTemp;
     private final MutableLiveData<Character> selectedCharacterLiveData = new MutableLiveData<>();
 
     public MainActivityViewModel(Application application) {
@@ -52,6 +47,11 @@ public class MainActivityViewModel extends AndroidViewModel {
         return characters;
     }
 
+    public List<Character> getCharactersDBList(String faculty) {
+        characterTemp = charactersRepository.getCharactersDBList(faculty);
+        return characterTemp;
+    }
+
     public LiveData<List<Character>> getAllCharactersDB() {
         characters = charactersRepository.getAllCharactersDB();
         return characters;
@@ -69,19 +69,6 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     public void deleteAllCharacters(OnDeleteCompleted listener) {
         charactersRepository.deleteAllCharacters(listener);
-    }
-
-    public void deleteCharacters(List<Character> characterList, OnDeleteCompleted listener) {
-        charactersRepository.deleteCharacters(characterList, listener);
-    }
-
-
-    public void addWand(Wand wand) {
-        charactersRepository.insertWand(wand);
-    }
-
-    public void deleteWand(Wand wand) {
-        charactersRepository.deleteWand(wand);
     }
 
 }

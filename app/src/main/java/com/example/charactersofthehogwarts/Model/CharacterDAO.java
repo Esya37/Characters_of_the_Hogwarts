@@ -15,11 +15,11 @@ public interface CharacterDAO {
     @Insert
     void insert(Character character);
 
-    @Delete
-    void delete(Character character);
-
     @Query("Delete from characterTable")
     void deleteAll();
+
+    @Query("Select * from characterTable where house ==:faculty")
+    List<Character> getCharactersDBList(String faculty);
 
     @Query("Select * from characterTable where house ==:faculty")
     LiveData<List<Character>> getCharactersDB(String faculty);

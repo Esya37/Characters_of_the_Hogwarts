@@ -20,10 +20,10 @@ public class Character {
     @Ignore
     private Wand wand;
     private String patronus;
-    private Boolean hogwartsStudent;
-    private Boolean hogwartsStaff;
+    private boolean hogwartsStudent;
+    private boolean hogwartsStaff;
     private String actor;
-    private Boolean alive;
+    private boolean alive;
     private String image;
 
 

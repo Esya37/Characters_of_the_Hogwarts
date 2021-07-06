@@ -1,29 +1,20 @@
 package com.example.charactersofthehogwarts.View.fragments;
 
-import android.app.Activity;
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.transition.Slide;
 
 import com.example.charactersofthehogwarts.Model.Character;
 import com.example.charactersofthehogwarts.Model.Wand;
@@ -33,125 +24,73 @@ import com.example.charactersofthehogwarts.ViewModel.MainActivityViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 public class CharactersFragment extends Fragment {
 
     private static final String ARG_FACULTY = "faculty";
-    private static final String ARG_SOURCE = "source";
 
     private String faculty;
-    private String source;
     private List<Character> characterList;
 
     RecyclerView charactersRecyclerView;
     RecyclerViewAdapter adapter;
 
     private boolean isDataLoaded;
-    private boolean isDataLoadedDB;
-    Fragment thisFragment;
+    private ExecutorService executorService;
 
     public CharactersFragment() {
         // Required empty public constructor
     }
 
-    public static CharactersFragment newInstance(String faculty, String source) {
+    public static CharactersFragment newInstance(String faculty) {
         CharactersFragment fragment = new CharactersFragment();
         Bundle args = new Bundle();
         args.putString(ARG_FACULTY, faculty);
-        args.putString(ARG_SOURCE, source);
         fragment.setArguments(args);
         return fragment;
     }
 
-    View inflatedView;
-    MainActivityViewModel model;
-    FragmentManager fm;
+    private View inflatedView;
+    private MainActivityViewModel model;
+    private ProgressDialog pd;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             faculty = getArguments().getString(ARG_FACULTY);
-            source = getArguments().getString(ARG_SOURCE);
         }
-        thisFragment = this;
+
+        pd = new ProgressDialog(getParentFragment().getContext());
+        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        pd.setCancelable(false);
+        pd.setMessage("Loading...");
+        pd.show();
         isDataLoaded = false;
-        isDataLoadedDB = false;
         characterList = new ArrayList<Character>();
 
         model = new ViewModelProvider(getActivity()).get(MainActivityViewModel.class);
 
-        if (source.equals("internet")) {
-
-            model.getCharacters(faculty).observe(this, new Observer<List<Character>>() {
-                @Override
-                public void onChanged(List<Character> characters) {
-                    if (!characters.isEmpty() && (characters.get(0).getHouse().equals(faculty))) {
+        model.getCharacters(faculty).observe(this, new Observer<List<Character>>() {
+            @Override
+            public void onChanged(List<Character> characters) {
+                if (!characters.isEmpty()) {
+                    if (characters.get(0).getId() != 0) {
                         characterList.clear();
                         characterList.addAll(characters);
                         adapter.notifyDataSetChanged();
                         isDataLoaded = true;
-                        addCharactersInDB();
-                    }
-
-                }
-            });
-        }
-        if (source.equals("DB")) {
-            model.getCharactersDB(faculty).observe(this, new Observer<List<Character>>() {
-                @Override
-                public void onChanged(List<Character> characters) {
-                    characterList.clear();
-                    characterList.addAll(characters);
-                    adapter.notifyDataSetChanged();
-                    isDataLoaded = true;
-
-                }
-            });
-        }
-
-
-    }
-
-
-    public void addCharactersInDB() {
-
-        model.getCharactersDB(faculty).observe(this, new Observer<List<Character>>() {
-            @Override
-            public void onChanged(List<Character> characters) {
-                if ((characters.isEmpty()) && (!isDataLoadedDB)) {
-                    if (!characterList.isEmpty()) {
-                        isDataLoadedDB = true;
-                        model.addCharacters(characterList);
-                    }
-                }
-                if (characters.size() == characterList.size()) {
-                    for (int i = 0; i < characters.size(); i++) {
-                        characterList.get(i).setId(characters.get(i).getId());
                     }
                 }
             }
         });
 
+
     }
 
-    public static boolean hasConnection(final Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        if (wifiInfo != null && wifiInfo.isConnected()) {
-            return true;
-        }
-        wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-        if (wifiInfo != null && wifiInfo.isConnected()) {
-            return true;
-        }
-        wifiInfo = cm.getActiveNetworkInfo();
-        if (wifiInfo != null && wifiInfo.isConnected()) {
-            return true;
-        }
-        return false;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -159,7 +98,7 @@ public class CharactersFragment extends Fragment {
         postponeEnterTransition();
         inflatedView = inflater.inflate(R.layout.fragment_characters, container, false);
 
-        charactersRecyclerView = (RecyclerView) inflatedView.findViewById(R.id.charactersRecyclerView);
+        charactersRecyclerView = inflatedView.findViewById(R.id.charactersRecyclerView);
 
         charactersRecyclerView.setLayoutManager(new LinearLayoutManager(inflatedView.getContext()));
         adapter = new RecyclerViewAdapter(inflatedView.getContext(), characterList);
@@ -183,6 +122,26 @@ public class CharactersFragment extends Fragment {
     }
 
     NavController navController;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        pd.dismiss();
+        executorService = Executors.newSingleThreadExecutor();
+        Runnable wait = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(500);  //Время анимации перехода между фрагментами
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                adapter.isClickable = true;
+            }
+        };
+        executorService.execute(wait);
+        executorService.shutdown();
+    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {

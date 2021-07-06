@@ -1,28 +1,21 @@
 package com.example.charactersofthehogwarts.View.fragments;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.charactersofthehogwarts.Model.Character;
-import com.example.charactersofthehogwarts.Model.Wand;
 import com.example.charactersofthehogwarts.R;
 import com.example.charactersofthehogwarts.ViewModel.MainActivityViewModel;
 
 public class WandFragment extends Fragment {
 
-    private LiveData<Character> selectedCharacter;
     private MainActivityViewModel model;
     private View inflatedView;
 
@@ -32,8 +25,7 @@ public class WandFragment extends Fragment {
     }
 
     public static WandFragment newInstance() {
-        WandFragment fragment = new WandFragment();
-        return fragment;
+        return new WandFragment();
     }
 
     @Override

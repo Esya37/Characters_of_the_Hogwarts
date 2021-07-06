@@ -6,7 +6,6 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.charactersofthehogwarts.View.OnDeleteCompleted;
 import com.example.charactersofthehogwarts.services.CharacterService;
 import com.example.charactersofthehogwarts.services.RetrofitService;
 
@@ -22,20 +21,20 @@ import retrofit2.Response;
 
 public class CharactersRepository {
 
-    private CharacterService characterService;
+    private final CharacterService characterService;
     private Call<List<Character>> call;
     ExecutorService executorService;
 
-    private CharacterDAO characterDAO;
-    private WandDAO wandDAO;
+    private final CharacterDAO characterDAO;
+    private final WandDAO wandDAO;
 
-    private MutableLiveData<List<Character>> characters;
+    private final MutableLiveData<List<Character>> characters;
 
     public CharactersRepository(Application application) {
         CharactersDB charactersDB = CharactersDB.getCharactersDB(application);
         characterDAO = charactersDB.getCharacterDAO();
         wandDAO = charactersDB.getWandDAO();
-        characterService = RetrofitService.getRetrofitService();
+        characterService = RetrofitService.getCharacterService();
         characters = new MutableLiveData<>();
 
     }
@@ -61,7 +60,7 @@ public class CharactersRepository {
         executorService = Executors.newSingleThreadExecutor();
         Callable<Boolean> insertCharacters = new Callable<Boolean>() {
             @Override
-            public Boolean call() throws Exception {
+            public Boolean call() {
                 for (int i = 0; i < characters.size(); i++) {
                     characterDAO.insert(characters.get(i));
                 }
@@ -70,7 +69,7 @@ public class CharactersRepository {
         };
         Callable<Boolean> insertWand = new Callable<Boolean>() {
             @Override
-            public Boolean call() throws Exception {
+            public Boolean call() {
                 List<Character> charactersDB = characterDAO.getCharactersDBList(characters.get(0).getHouse());
                 for (int i = 0; i < characters.size(); i++) {
                     characters.get(i).getWand().setId(charactersDB.get(i).getId());
@@ -97,29 +96,11 @@ public class CharactersRepository {
 
     }
 
-    public void insertWand(Wand wand) {
-        executorService = Executors.newSingleThreadExecutor();
-        Callable<Boolean> insertWand = new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                wandDAO.insert(wand);
-                return null;
-            }
-
-        };
-        try {
-            executorService.submit(insertWand).get();
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-        executorService.shutdown();
-    }
-
-    public void deleteAllCharacters(OnDeleteCompleted listener) {
+    public void deleteAllCharacters() {
         executorService = Executors.newSingleThreadExecutor();
         Callable<Boolean> deleteAllCharacters = new Callable<Boolean>() {
             @Override
-            public Boolean call() throws Exception {
+            public Boolean call() {
                 characterDAO.deleteAll();
                 return null;
             }
@@ -130,7 +111,6 @@ public class CharactersRepository {
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
-        listener.onDeleteCompleted();
         executorService.shutdown();
 
     }

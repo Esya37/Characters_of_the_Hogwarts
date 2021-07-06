@@ -1,44 +1,24 @@
 package com.example.charactersofthehogwarts.View;
 
-import android.app.Application;
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Point;
 import android.os.Build;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.Group;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.charactersofthehogwarts.Model.Character;
 import com.example.charactersofthehogwarts.R;
-import com.example.charactersofthehogwarts.ViewModel.MainActivityViewModel;
-import com.example.charactersofthehogwarts.services.CharacterService;
-import com.example.charactersofthehogwarts.services.RetrofitService;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
@@ -46,10 +26,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private final LayoutInflater inflater;
     private final List<Character> characters;
     private ItemClickListener clickListener;
+    public boolean isClickable;
 
-    Context context;
+    private final Context context;
 
-    Character character;
+    private Character character;
 
     private boolean[] isExpanded;
 
@@ -57,7 +38,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.characters = list;
         this.context = context;
         this.inflater = LayoutInflater.from(context);
-
+        isClickable = false;
     }
 
     @Override
@@ -110,31 +91,22 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView nameView;
-        TextView dateOfBirthView;
-        TextView genderTextView;
-        TextView speciesTextView;
-        TextView yearOfBirthTextView;
-        TextView ancestryTextView;
-        TextView eyeColourTextView;
-        TextView hairColourTextView;
-        TextView patronusTextView;
-        TextView hogwartsStudentOrStaffTextView;
-        TextView actorTextView;
-        TextView aliveTextView;
-        TextView speciesTextView2;
-        TextView yearOfBirthTextView2;
-        TextView ancestryTextView2;
-        TextView eyeColourTextView2;
-        TextView hairColourTextView2;
-        TextView patronusTextView2;
-        TextView hogwartsStudentOrStaffTextView2;
-        TextView actorTextView2;
-        TextView aliveTextView2;
-        Button collapseButton;
-        ImageView imageView;
+        private final TextView nameView;
+        private final TextView dateOfBirthView;
+        private final TextView genderTextView;
+        private final TextView speciesTextView;
+        private final TextView yearOfBirthTextView;
+        private final TextView ancestryTextView;
+        private final TextView eyeColourTextView;
+        private final TextView hairColourTextView;
+        private final TextView patronusTextView;
+        private final TextView hogwartsStudentOrStaffTextView;
+        private final TextView actorTextView;
+        private final TextView aliveTextView;
+        private final Button collapseButton;
+        private final ImageView imageView;
 
-        Group additionalInformationGroup;
+        private final Group additionalInformationGroup;
 
         ViewHolder(View view) {
             super(view);
@@ -157,16 +129,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             hogwartsStudentOrStaffTextView = view.findViewById(R.id.hogwartsStudentOrStaffTextView);
             actorTextView = view.findViewById(R.id.actorTextView);
             aliveTextView = view.findViewById(R.id.aliveTextView);
-
-            speciesTextView2 = view.findViewById(R.id.speciesTextView2);
-            yearOfBirthTextView2 = view.findViewById(R.id.yearOfBirthTextView2);
-            ancestryTextView2 = view.findViewById(R.id.ancestryTextView2);
-            eyeColourTextView2 = view.findViewById(R.id.eyeColourTextView2);
-            hairColourTextView2 = view.findViewById(R.id.hairColourTextView2);
-            patronusTextView2 = view.findViewById(R.id.patronusTextView2);
-            hogwartsStudentOrStaffTextView2 = view.findViewById(R.id.hogwartsStudentOrStaffTextView2);
-            actorTextView2 = view.findViewById(R.id.actorTextView2);
-            aliveTextView2 = view.findViewById(R.id.aliveTextView2);
 
             additionalInformationGroup = view.findViewById(R.id.additionalInformationGroup);
 
@@ -198,8 +160,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         @Override
         public void onClick(View view) {
-            if (clickListener != null) {
-                clickListener.onItemClick(view, getAbsoluteAdapterPosition());
+            if(isClickable) {
+                if (clickListener != null) {
+                    clickListener.onItemClick(view, getAbsoluteAdapterPosition());
+                }
             }
         }
     }

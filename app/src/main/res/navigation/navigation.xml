@@ -15,6 +15,7 @@
             app:destination="@id/charactersFragment"
             app:enterAnim="@anim/translate_from_bottom_to_top"
             app:exitAnim="@anim/translate_from_nothing_to_nothing"
+            app:launchSingleTop="true"
             app:popEnterAnim="@anim/translate_from_nothing_to_nothing"
             app:popExitAnim="@anim/translate_from_top_to_bottom" />
     </fragment>
@@ -28,16 +29,13 @@
             app:destination="@id/wandFragment"
             app:enterAnim="@anim/translate_from_right_to_left"
             app:exitAnim="@anim/exit_translate_from_right_to_left"
+            app:launchSingleTop="true"
             app:popEnterAnim="@anim/translate_from_left_to_right"
             app:popExitAnim="@anim/exit_translate_from_left_to_right" />
         <argument
             android:name="faculty"
             app:argType="string"
             android:defaultValue="unknown :(" />
-        <argument
-            android:name="source"
-            app:argType="string"
-            android:defaultValue="internet" />
     </fragment>
     <fragment
         android:id="@+id/wandFragment"
